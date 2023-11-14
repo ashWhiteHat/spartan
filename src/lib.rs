@@ -1,14 +1,9 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod matrix;
+mod r1cs;
+mod wire;
 
 #[cfg(test)]
-mod tests {
-    use super::*;
+mod test;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub use r1cs::R1cs;
+pub use wire::Wire;
