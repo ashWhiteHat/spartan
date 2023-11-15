@@ -23,12 +23,14 @@ impl<F: PrimeField> R1cs<F> {
     ///  check (A · Z) ◦ (B · Z) = C · Z
     pub fn is_sat(&self) -> bool {
         let R1cs { m, a, b, c, x, w } = self.clone();
+        let l = x.0.len();
+        let z = DenseVectors::z_vector(x, w);
         // A · Z
-        let az = a.prod(m, &x, &w);
+        let az = a.prod(m, l, &z);
         // B · Z
-        let bz = b.prod(m, &x, &w);
+        let bz = b.prod(m, l, &z);
         // C · Z
-        let cz = c.prod(m, &x, &w);
+        let cz = c.prod(m, l, &z);
         // (A · Z) ◦ (B · Z)
         let azbz = az * bz;
 

@@ -11,6 +11,10 @@ impl<F: PrimeField> DenseVectors<F> {
             index: 0,
         }
     }
+
+    pub(crate) fn z_vector(rhs: Self, lhs: Self) -> Self {
+        Self([rhs.0, vec![F::one()], lhs.0].concat())
+    }
 }
 
 pub(crate) struct DenseVectorsIterator<F: PrimeField> {

@@ -13,20 +13,15 @@ pub(crate) struct SparseMatrix<F: PrimeField>(pub(crate) Vec<Vec<Entry<F>>>);
 
 impl<F: PrimeField> SparseMatrix<F> {
     // matrix-vector multiplication
-    pub(crate) fn prod(
-        &self,
-        m: usize,
-        x: &DenseVectors<F>,
-        w: &DenseVectors<F>,
-    ) -> DenseVectors<F> {
+    pub(crate) fn prod(&self, m: usize, l: usize, z: &DenseVectors<F>) -> DenseVectors<F> {
         let mut vectors = DenseVectors(vec![F::zero(); m]);
         for (index, elements) in self.0.iter().enumerate() {
             vectors[index] = elements.iter().fold(F::zero(), |sum, element| {
                 let (wire, coeff) = element.get();
                 let value = match wire {
-                    Wire::Instance(i) => x[i],
-                    Wire::Witness(i) => w[i],
-                    Wire::One => F::one(),
+                    Wire::Instance(i) => z[i],
+                    Wire::Witness(i) => z[i + l + 1],
+                    Wire::One => z[l],
                 };
                 sum + coeff * value
             })
