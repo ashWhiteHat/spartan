@@ -1,4 +1,4 @@
-use crate::matrix::{DenseVectors, SparseMatrix};
+use crate::matrix::DenseVectors;
 
 use zkstd::common::PrimeField;
 
@@ -23,16 +23,12 @@ impl<F: PrimeField> R1csWitness<F> {
         }
     }
 
-    pub(crate) fn z(&self, m: usize) -> DenseVectors<F> {
-        let l = self.x.0.len();
-        let m_l_1 = self.w.0.len();
-        assert_eq!(m, l + m_l_1 + 1);
-
+    pub(crate) fn z(&self) -> DenseVectors<F> {
         DenseVectors(
             self.x
                 .0
                 .iter()
-                .chain(vec![F::one()].iter())
+                .chain(vec![self.one].iter())
                 .chain(self.w.0.iter())
                 .map(|e| *e)
                 .collect::<Vec<F>>(),
