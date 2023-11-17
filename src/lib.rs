@@ -1,4 +1,5 @@
 mod matrix;
+mod pedersen;
 mod r1cs;
 mod wire;
 
